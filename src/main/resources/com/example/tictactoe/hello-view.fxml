@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="mainWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tictactoe.HelloController">
    <children>
       <GridPane fx:id="grid" layoutX="39.0" layoutY="50.0" prefHeight="400.0" prefWidth="400.0">
         <columnConstraints>
@@ -34,35 +32,6 @@
             <RowConstraints percentHeight="10" vgrow="SOMETIMES" /><!--maxHeight="110.0" minHeight="10.0" prefHeight="90.0" vgrow="SOMETIMES" />-->
             <RowConstraints percentHeight="10" vgrow="SOMETIMES" /><!--minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />-->
         </rowConstraints>
-         <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="X" textAlignment="CENTER">
-               <font>
-                  <Font name="Arial Narrow" size="14.0" />
-               </font>
-            </Button>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="X" textAlignment="CENTER"
-                    GridPane.columnIndex="1">
-               <font>
-                  <Font name="Arial Narrow" size="14.0" />
-               </font>
-            </Button>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="X" textAlignment="CENTER"
-                    GridPane.columnIndex="2">
-               <font>
-                  <Font name="Arial Narrow" size="14.0" />
-               </font>
-            </Button>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="X" textAlignment="CENTER"
-                    GridPane.columnIndex="3">
-                 <font>
-                     <Font name="Arial Narrow" size="14.0" />
-                 </font>
-            </Button>
-
-
-
-
-         </children>
       </GridPane>
    </children>
 </AnchorPane>
