@@ -41,7 +41,8 @@ public class HelloController {
                 btn.setMnemonicParsing(false);
                 btn.setTextAlignment(TextAlignment.CENTER);
                 btn.setFont(Font.font("Arial Narrow", 14.0));
-                btn.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseevent -> btnClick(new ActionEvent()));
+                btn.setOnAction(this::btnClick);
+                //btn.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseevent -> btnClick(new ActionEvent()));
                 //btn.setOnAction(btnClick());
 
                 grid.add(btn, i, j);
@@ -59,3 +60,11 @@ public class HelloController {
 
 }
 
+//btn.setOnAction(new EventHandler<ActionEvent>() {
+//
+//@Override
+//public void handle(ActionEvent event) {
+//
+//        btn.setText("You've clicked!");
+//        }
+//        });
