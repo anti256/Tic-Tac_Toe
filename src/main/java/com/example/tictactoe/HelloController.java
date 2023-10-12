@@ -25,26 +25,29 @@ public class HelloController {
 
     @FXML
     void btnClick(ActionEvent event) {
-        ((Button)event.getSource()).setText("O");
+        if (((Button)event.getSource()).getText().equals("X")){
+       // ((Button)event.getSource()).setFont(Font.);
+        ((Button)event.getSource()).setText("O");}
+                else ((Button)event.getSource()).setText("X");
 
     }
 
     @FXML
     void initialize(){
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
+        for (int i = 0; i < 25; i++) {
+            for (int j = 0; j < 25; j++) {
                 Button btn = new Button();
-                btn.setText(String.valueOf(i));
+                //btn.setText(String.valueOf("OOO"));
                 btn.setAlignment(Pos.CENTER);
                 btn.setContentDisplay(ContentDisplay.CENTER);
-                btn.setPrefSize(40.0,40.0);
+                btn.setPrefSize(30.0,30.0);
+                btn.setMinSize(30.0, 30.0);
+                btn.setMaxSize(30.0, 30.0);
                 btn.setMnemonicParsing(false);
                 btn.setTextAlignment(TextAlignment.CENTER);
                 btn.setFont(Font.font("Arial Narrow", 14.0));
                 btn.setOnAction(this::btnClick);
-                //btn.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseevent -> btnClick(new ActionEvent()));
-                //btn.setOnAction(btnClick());
-
+                btn.setText(String.valueOf(i));
                 grid.add(btn, i, j);
                 //mainWindow.;
                 btn.setVisible(true);
