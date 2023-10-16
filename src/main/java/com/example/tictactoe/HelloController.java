@@ -12,7 +12,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 public class HelloController {
@@ -22,13 +24,16 @@ public class HelloController {
     private GridPane grid;
     @FXML
     private AnchorPane mainWindow;
+    @FXML
+    Button[][] buttonArray = new Button[25][25];
 
     @FXML
     void btnClick(ActionEvent event) {
         if (((Button)event.getSource()).getText().equals("X")){
-       // ((Button)event.getSource()).setFont(Font.);
-        ((Button)event.getSource()).setText("O");}
-                else ((Button)event.getSource()).setText("X");
+            ((Button)event.getSource()).setText("O");
+       ((Button)event.getSource()).setStyle("-fx-text-fill: #ff0000");}
+                else {((Button)event.getSource()).setText("X");
+            ((Button)event.getSource()).setStyle("-fx-text-fill: #0000ff");}
 
     }
 
@@ -36,8 +41,7 @@ public class HelloController {
     void initialize(){
         for (int i = 0; i < 25; i++) {
             for (int j = 0; j < 25; j++) {
-                Button btn = new Button();
-                //btn.setText(String.valueOf("OOO"));
+                Button btn = new Button(" ");
                 btn.setAlignment(Pos.CENTER);
                 btn.setContentDisplay(ContentDisplay.CENTER);
                 btn.setPrefSize(30.0,30.0);
@@ -47,27 +51,24 @@ public class HelloController {
                 btn.setTextAlignment(TextAlignment.CENTER);
                 btn.setFont(Font.font("Arial Narrow", 14.0));
                 btn.setOnAction(this::btnClick);
-                btn.setText(String.valueOf(i));
+                //btn.setText(String.valueOf(i));
+                //btn.setText(" ");
                 grid.add(btn, i, j);
                 //mainWindow.;
                 btn.setVisible(true);
+                buttonArray[i][j] = btn;
             }
 
         }
+    }//end of initialize()
 
-
-
-
+    @FXML
+    void newGame(ActionEvent event) {
+        for (int i = 0; i < 25; i++) {
+            for (int j = 0; j < 25; j++) {
+                buttonArray[i][j].setText(" ");
+            }
+        }
     }
 
-
 }
-
-//btn.setOnAction(new EventHandler<ActionEvent>() {
-//
-//@Override
-//public void handle(ActionEvent event) {
-//
-//        btn.setText("You've clicked!");
-//        }
-//        });
