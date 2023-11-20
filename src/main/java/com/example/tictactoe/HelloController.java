@@ -17,6 +17,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class HelloController {
     @FXML
     private Label welcomeText;
@@ -26,6 +29,11 @@ public class HelloController {
     private AnchorPane mainWindow;
     @FXML
     Button[][] buttonArray = new Button[25][25];
+    //ArrayList<Points> compPoints = new ArrayList<>();
+    HashMap<Integer, Integer> compPoints = new HashMap<>();
+    HashMap<Integer, Integer> userPoints = new HashMap<>();
+    //ArrayList<Points> userPoints = new ArrayList<>();
+    String whoseMove;
 
     @FXML
     void btnClick(ActionEvent event) {
@@ -64,11 +72,18 @@ public class HelloController {
 
     @FXML
     void newGame(ActionEvent event) {
+        //очищаем игровое поле
         for (int i = 0; i < 25; i++) {
             for (int j = 0; j < 25; j++) {
                 buttonArray[i][j].setText(" ");
             }
         }
+    userPoints.clear();
+    compPoints.clear();
+    buttonArray[13][13].setText("X");
+    compPoints.put(13, 13);
+    whoseMove = "human";
+
     }
 
 }
