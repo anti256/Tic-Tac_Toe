@@ -28,15 +28,22 @@ public class HelloController {
     @FXML
     private AnchorPane mainWindow;
     @FXML
-    Button[][] buttonArray = new Button[25][25];
-    //ArrayList<Points> compPoints = new ArrayList<>();
-    HashMap<Integer, Integer> compPoints = new HashMap<>();
-    HashMap<Integer, Integer> userPoints = new HashMap<>();
+    //Button[][] buttonArray = new Button[25][25];
+    ArrayList<ButtonClass> buttonArray = new ArrayList<>();
+    ArrayList<ButtonClass> compPoints = new ArrayList<>();//клетки компьютера
+    ArrayList<ButtonClass> userPoints = new ArrayList<>();//клетки человека
+
+    //HashMap<Integer, Integer> compPoints = new HashMap<>();
+    //HashMap<Integer, Integer> userPoints = new HashMap<>();
     //ArrayList<Points> userPoints = new ArrayList<>();
     String whoseMove;
 
     @FXML
-    void btnClick(ActionEvent event) {
+    static void btnClick(ActionEvent event) {
+        /*if (whoseMove.equals("human")) {
+            ((Button)event.getSource()).
+            if (compPoints.contains())
+        }*/
         if (((Button)event.getSource()).getText().equals("X")){
             ((Button)event.getSource()).setText("O");
        ((Button)event.getSource()).setStyle("-fx-text-fill: #ff0000");}
@@ -49,41 +56,31 @@ public class HelloController {
     void initialize(){
         for (int i = 0; i < 25; i++) {
             for (int j = 0; j < 25; j++) {
-                Button btn = new Button(" ");
-                btn.setAlignment(Pos.CENTER);
-                btn.setContentDisplay(ContentDisplay.CENTER);
-                btn.setPrefSize(30.0,30.0);
-                btn.setMinSize(30.0, 30.0);
-                btn.setMaxSize(30.0, 30.0);
-                btn.setMnemonicParsing(false);
-                btn.setTextAlignment(TextAlignment.CENTER);
-                btn.setFont(Font.font("Arial Narrow", 14.0));
-                btn.setOnAction(this::btnClick);
-                //btn.setText(String.valueOf(i));
-                //btn.setText(" ");
-                grid.add(btn, i, j);
-                //mainWindow.;
-                btn.setVisible(true);
-                buttonArray[i][j] = btn;
+                ButtonClass btnCl = new ButtonClass(new Button(""), i, j);
+                buttonArray.add(btnCl);
+                btnCl.getButton().setVisible(true);
             }
-
         }
     }//end of initialize()
 
     @FXML
     void newGame(ActionEvent event) {
         //очищаем игровое поле
-        for (int i = 0; i < 25; i++) {
-            for (int j = 0; j < 25; j++) {
-                buttonArray[i][j].setText(" ");
-            }
+
+        for (ButtonClass btnC: buttonArray
+             ) {
+            btnC.getButton().setText("");
         }
+
     userPoints.clear();
     compPoints.clear();
-    buttonArray[13][13].setText("X");
-    compPoints.put(13, 13);
-    whoseMove = "human";
+    buttonArray.stream()
+            .filter(ButtonC -> ButtonC.getButton().equals(ButtonC.getButton(13, 13)))
+            .forEach(x -> x.setText("X"));
 
+
+    //compPoints.add(new Points(13, 13));
+    whoseMove = "human";
     }
 
 }
