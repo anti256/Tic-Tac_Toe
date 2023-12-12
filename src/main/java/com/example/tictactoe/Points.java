@@ -8,9 +8,25 @@ public class Points {
         Ypos = y;
     }
 
-    @Getter @Setter
+    //@Getter @Setter
     private int Xpos;
 
-    @Getter @Setter
+    public int getXpos() {
+        return Xpos;
+    }
+
+    public void setXpos(int xpos) {
+        Xpos = xpos;
+    }
+
+    public int getYpos() {
+        return Ypos;
+    }
+
+    public void setYpos(int ypos) {
+        Ypos = ypos;
+    }
+
+    //@Getter @Setter
     private int Ypos;
 }

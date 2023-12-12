@@ -22,7 +22,7 @@ public class ButtonClass {
         button.setMnemonicParsing(false);
         button.setTextAlignment(TextAlignment.CENTER);
         button.setFont(Font.font("Arial Narrow", 14.0));
-        button.setOnAction(HelloController::btnClick);
+        //button.setOnAction(HelloController::btnClick);
         this.x = x;
         this.y = y;
         button.setVisible(true);
@@ -51,6 +51,10 @@ public class ButtonClass {
 
     public int getY (Button btn){
         return y;
+    }
+
+    public String getPosText (Button btn) {
+        return (x + "" + y);
     }
 
 }
