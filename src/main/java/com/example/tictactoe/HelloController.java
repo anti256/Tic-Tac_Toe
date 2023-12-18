@@ -19,10 +19,11 @@ import javafx.scene.text.TextAlignment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 public class HelloController {
     @FXML
-    private Label welcomeText;
+    private Label label;
     @FXML
     private GridPane grid;
     @FXML
@@ -42,18 +43,31 @@ public class HelloController {
     @FXML
     String whoseMove;//чей ход - human или computer
 
+    Random random = new Random();
+
     @FXML
     void btnClick(ActionEvent event) {
+        ButtonClass bc = buttonClassByButton((Button)event.getSource());//элемент ButtonClass соответствующий нажатой кнопке
+        if (whoseMove.equals("human")){//если первый ходит человек
+            bc.getButton().setStyle("-fx-text-fill: #0000ff");
+            bc.setText("X");
+            userPoints.add(bc);
+            whoseMove = "computer";
+        } else {//если первый ходит компьютер
+            bc.getButton().setStyle("-fx-text-fill: #ff0000");
+            bc.setText("O");
+            compPoints.add(bc);
+            whoseMove = "human";}
         /*if (whoseMove.equals("human")) {
             ((Button)event.getSource()).
             if (compPoints.contains())
         }*/
-        Button btnEvent = (Button)event.getSource();
+        //Button btnEvent = (Button)event.getSource();
         //System.out.println(btnEvent.toString());
         //buttonArray.stream().filter(x->x.getButton().equals(btnEvent)).forEach(x-> System.out.println(x.getButton()));
-        ButtonClass bc = buttonClassByButton(btnEvent);
+        //ButtonClass bc = buttonClassByButton(btnEvent);
                 //buttonArray.get(buttonArray.indexOf(btnEvent));
-        bc.getButton().setText(Integer.toString(bc.getX(bc.getButton())));
+        //bc.getButton().setText(Integer.toString(bc.getX(bc.getButton())));
         //((Button)event.getSource()).setText("O");
 
         /*if (((Button)event.getSource()).getText().equals("X")){
@@ -66,40 +80,29 @@ public class HelloController {
 
     @FXML
     void initialize(){
-        whoseMove = (((int) (100 * Math.random())) < 50) ? "human" : "computer";//100 * (int) Math.random()) < 50
+        whoseMove = (random.nextInt(100) < 50) ? "human" : "computer";//100 * (int) Math.random()) < 50
+        label.setText((whoseMove.equals("human")) ? "Человек первый" : "Компьютер первый");
         for (int i = 0; i < 25; i++) {
             for (int j = 0; j < 25; j++) {
-                Button button = new Button(" ");
-//                button.setAlignment(Pos.CENTER);
-//                button.setContentDisplay(ContentDisplay.CENTER);
-//                button.setPrefSize(30.0,30.0);
-//                button.setMinSize(30.0, 30.0);
-//                button.setMaxSize(30.0, 30.0);
-//                button.setMnemonicParsing(false);
-//                button.setTextAlignment(TextAlignment.CENTER);
-//                button.setFont(Font.font("Arial Narrow", 14.0));
+                Button button = new Button("");
                 button.setOnAction(this::btnClick);
                 grid.add(button, j, i);
-                //button.setVisible(true);
                 ButtonClass btnCl = new ButtonClass(button, j, i);
                 buttonArray.add(btnCl);
-                //btnCl.getButton(i, j).setVisible(true);
             }
         }
-        /*for (ButtonClass bc: buttonArray
-             ) {
-            bc.getButton().setText(buttonArray.indexOf(bc) + "");
-        }*/
-        //grid.setVisible(true);
+        newGame(null);
     }//end of initialize()
 
     @FXML
     void newGame(ActionEvent event) {
         whoseMove = (whoseMove.equals("human")) ? "computer": "human";//перещелкиваем игрока
+        label.setText((whoseMove.equals("human")) ? "Человек первый" : "Компьютер первый");
         //очищаем игровое поле
         for (ButtonClass btnC: buttonArray
              ) {
             btnC.getButton().setText("");
+            btnC.getButton().setStyle("-fx-text-fill: #000000");
         }
         userPoints.clear();
         compPoints.clear();
@@ -112,24 +115,31 @@ public class HelloController {
         possiblePoints.add(buttonArray.get(362));
         possiblePoints.add(buttonArray.get(363));
         possiblePoints.add(buttonArray.get(364));
-        for (ButtonClass b: possiblePoints
+        /*for (ButtonClass b: possiblePoints
              ) {
             b.getButton().setText("A");
-        }
+        }*/
 
-       if (whoseMove.equals("human")){
+       if (whoseMove.equals("human")){//если первый ходит человек
            buttonArray.get(338).getButton().setStyle("-fx-text-fill: #0000ff");
            buttonArray.get(338).setText("X");
-           int cCurr = (int) ((possiblePoints.size() - 1) * Math.random());
-           possiblePoints.get(cCurr).getButton().setStyle("-fx-text-fill: #ff0000");
-           possiblePoints.get(cCurr).getButton().setText("O");
-           possiblePoints.remove(cCurr);
-           searchEmptyButton(buttonArray.indexOf(possiblePoints.get(cCurr)));
-           whoseMove = "computer";
-        } else {
+           userPoints.add(buttonArray.get(338));
+           int cCurr = random.nextInt(possiblePoints.size());//случайный индекс из списка возможных
+           ButtonClass posBC = possiblePoints.get(cCurr);//случайный элемент из списка возможных
+           posBC.getButton().setStyle("-fx-text-fill: #ff0000");//замена цвета случайному
+           posBC.getButton().setText("O");//замена текста случайному
+           compPoints.add(posBC);//добавляем случайный в список компьютера
+           //в список возможных добавляем элементы вокруг случайного без текста
+           searchEmptyButton(buttonArray.indexOf(posBC));
+           possiblePoints.remove(cCurr);//удаляем случайного из списка возможных
+        } else {//если первый ходит компьютер
            buttonArray.get(338).getButton().setStyle("-fx-text-fill: #ff0000");
            buttonArray.get(338).setText("O");
-           //possiblePoints.clear();
+           compPoints.add(buttonArray.get(338));
+        }
+        for (ButtonClass b: possiblePoints
+        ) {
+            b.getButton().setText("A");
         }
        /* buttonArray.stream()
             .filter(ButtonC -> ButtonC.getButton().equals(ButtonC.getButton(13, 13)))
@@ -144,6 +154,7 @@ public class HelloController {
     buttonArray.get(0).setText("sdf");*/
     }
 
+    //поиск элемента в buttonArray по кнопке
     ButtonClass buttonClassByButton (Button btn){
         for (ButtonClass bc: buttonArray
              ) {
@@ -154,10 +165,13 @@ public class HelloController {
 
     //поиск пустых кнопок около отмеченной и добавление их в список которых можно кликнуть
     void searchEmptyButton (int indeX){
+        //список возможных адресов вокруг целевого адреса
         int [] ints = new int[] {indeX - 26, indeX - 25, indeX - 24, indeX - 1, indeX +1, indeX + 24, indeX + 25, indeX + 26};
-        for (int i = 0; i < ints.length; i++) {
-            if (!buttonArray.get(ints[i]).getButton().getText().equals("")) {
-                possiblePoints.add(buttonArray.get(ints[i]));
+        for (int i = 0; i < ints.length; i++) {//перебор адресов
+            ButtonClass currentBC = buttonArray.get(ints[i]);//достаем элемент из buttonArray по текущему адресу
+            //если элемент не входит в списки компьютера или человека
+            if (!compPoints.contains(currentBC) && !userPoints.contains(currentBC)) {
+                possiblePoints.add(currentBC);//добавляем элемент в список возможных
             }
         }
     }
