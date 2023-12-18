@@ -39,5 +39,7 @@
       </GridPane>
       <Button fx:id="button" layoutX="820.0" layoutY="138.0" mnemonicParsing="false" onAction="#newGame" text="Новая игра" />
       <Label fx:id="label" layoutX="820.0" layoutY="69.0" text="Компьютер первый" />
+      <Label layoutX="820.0" layoutY="25.0" text="&quot;O&quot; - компьютер" textFill="RED" />
+      <Label layoutX="820.0" layoutY="42.0" text="&quot;X&quot; - человек" textFill="BLUE" />
    </children>
 </AnchorPane>
