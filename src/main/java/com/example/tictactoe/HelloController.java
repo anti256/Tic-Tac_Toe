@@ -48,7 +48,15 @@ public class HelloController {
     @FXML
     void btnClick(ActionEvent event) {
         ButtonClass bc = buttonClassByButton((Button)event.getSource());//элемент ButtonClass соответствующий нажатой кнопке
-        if (whoseMove.equals("human")){//если первый ходит человек
+        if (possiblePoints.contains(bc)){
+            bc.getButton().setStyle("-fx-text-fill: #0000ff");
+            bc.setText("X");
+            userPoints.add(bc);
+            searchEmptyButton(buttonArray.indexOf(bc));
+            whoseMove = "computer";
+            compStep();
+        }
+        /*if (whoseMove.equals("human")){//если первый ходит человек
             bc.getButton().setStyle("-fx-text-fill: #0000ff");
             bc.setText("X");
             userPoints.add(bc);
@@ -57,25 +65,55 @@ public class HelloController {
             bc.getButton().setStyle("-fx-text-fill: #ff0000");
             bc.setText("O");
             compPoints.add(bc);
-            whoseMove = "human";}
-        /*if (whoseMove.equals("human")) {
-            ((Button)event.getSource()).
-            if (compPoints.contains())
-        }*/
-        //Button btnEvent = (Button)event.getSource();
-        //System.out.println(btnEvent.toString());
-        //buttonArray.stream().filter(x->x.getButton().equals(btnEvent)).forEach(x-> System.out.println(x.getButton()));
-        //ButtonClass bc = buttonClassByButton(btnEvent);
-                //buttonArray.get(buttonArray.indexOf(btnEvent));
-        //bc.getButton().setText(Integer.toString(bc.getX(bc.getButton())));
-        //((Button)event.getSource()).setText("O");
+            whoseMove = "human";}*/
+    }
 
-        /*if (((Button)event.getSource()).getText().equals("X")){
-            ((Button)event.getSource()).setText("O");
-       ((Button)event.getSource()).setStyle("-fx-text-fill: #ff0000");}
-                else {((Button)event.getSource()).setText("X");
-            ((Button)event.getSource()).setStyle("-fx-text-fill: #0000ff");}*/
+    //@FXML
+    void compStep(){
+        ButtonClass compSt = possiblePoints.get(random.nextInt(possiblePoints.size()));
+        compSt.getButton().setStyle("-fx-text-fill: #ff0000");
+        compSt.setText("O");
+        compPoints.add(compSt);
+        searchEmptyButton(buttonArray.indexOf(compSt));
+        whoseMove = "human";
+    }
 
+    Boolean findWinner (ArrayList<ButtonClass> arr, ButtonClass btWin){
+        int buttonArrayIndex = buttonArray.indexOf(btWin);//индекс аргумента в списке buttonArray
+        //first direction - horizontal
+        int countWinBtn = 0;
+        //массив индексов в списке buttonArray
+        int[] bcArrayH = new int[] {buttonArrayIndex - 3, buttonArrayIndex - 2, buttonArrayIndex - 1, buttonArrayIndex,
+                                    buttonArrayIndex + 1, buttonArrayIndex + 2, buttonArrayIndex + 3};
+        for (int i = 0; i < 7; i++) {
+            if (arr.contains(buttonArray.get(bcArrayH[i]))){countWinBtn++;} else countWinBtn = 0;
+            if (countWinBtn == 4) return true;
+        }
+        //second direction - vertical
+        countWinBtn = 0;
+        int[] bcArrayV = new int[] {buttonArrayIndex - 75, buttonArrayIndex - 50, buttonArrayIndex - 25, buttonArrayIndex,
+                buttonArrayIndex + 25, buttonArrayIndex + 50, buttonArrayIndex + 75};
+        for (int i = 0; i < 7; i++) {
+            if (arr.contains(buttonArray.get(bcArrayV[i]))){countWinBtn++;} else countWinBtn = 0;
+            if (countWinBtn == 4) return true;
+        }
+        //third direction - left_top - right_bottom
+        countWinBtn = 0;
+        int[] bcArrayLT = new int[] {buttonArrayIndex - 78, buttonArrayIndex - 52, buttonArrayIndex - 26, buttonArrayIndex,
+                buttonArrayIndex + 26, buttonArrayIndex + 52, buttonArrayIndex + 78};
+        for (int i = 0; i < 7; i++) {
+            if (arr.contains(buttonArray.get(bcArrayLT[i]))){countWinBtn++;} else countWinBtn = 0;
+            if (countWinBtn == 4) return true;
+        }
+        //third direction -  left_bottom - right_top
+        countWinBtn = 0;
+        int[] bcArrayLB = new int[] {buttonArrayIndex + 72, buttonArrayIndex + 48, buttonArrayIndex + 24, buttonArrayIndex,
+                buttonArrayIndex - 24, buttonArrayIndex - 48, buttonArrayIndex - 72};
+        for (int i = 0; i < 7; i++) {
+            if (arr.contains(buttonArray.get(bcArrayLB[i]))){countWinBtn++;} else countWinBtn = 0;
+            if (countWinBtn == 4) return true;
+        }
+        return false;
     }
 
     @FXML
@@ -107,18 +145,17 @@ public class HelloController {
         userPoints.clear();
         compPoints.clear();
         possiblePoints.clear();
-        possiblePoints.add(buttonArray.get(312));
+        possiblePoints.add(buttonArray.get(338));
+        searchEmptyButton(338);
+        /*possiblePoints.add(buttonArray.get(312));
         possiblePoints.add(buttonArray.get(313));
         possiblePoints.add(buttonArray.get(314));
         possiblePoints.add(buttonArray.get(337));
         possiblePoints.add(buttonArray.get(339));
         possiblePoints.add(buttonArray.get(362));
         possiblePoints.add(buttonArray.get(363));
-        possiblePoints.add(buttonArray.get(364));
-        /*for (ButtonClass b: possiblePoints
-             ) {
-            b.getButton().setText("A");
-        }*/
+        possiblePoints.add(buttonArray.get(364));*/
+
 
        if (whoseMove.equals("human")){//если первый ходит человек
            buttonArray.get(338).getButton().setStyle("-fx-text-fill: #0000ff");
@@ -131,16 +168,14 @@ public class HelloController {
            compPoints.add(posBC);//добавляем случайный в список компьютера
            //в список возможных добавляем элементы вокруг случайного без текста
            searchEmptyButton(buttonArray.indexOf(posBC));
-           possiblePoints.remove(cCurr);//удаляем случайного из списка возможных
+           //possiblePoints.remove(posBC);
+           //possiblePoints.remove(cCurr);//удаляем случайного из списка возможных
         } else {//если первый ходит компьютер
            buttonArray.get(338).getButton().setStyle("-fx-text-fill: #ff0000");
            buttonArray.get(338).setText("O");
            compPoints.add(buttonArray.get(338));
         }
-        for (ButtonClass b: possiblePoints
-        ) {
-            b.getButton().setText("A");
-        }
+
        /* buttonArray.stream()
             .filter(ButtonC -> ButtonC.getButton().equals(ButtonC.getButton(13, 13)))
             .forEach(x -> x.setText("X"));
@@ -164,15 +199,24 @@ public class HelloController {
     }
 
     //поиск пустых кнопок около отмеченной и добавление их в список которых можно кликнуть
-    void searchEmptyButton (int indeX){
+    void searchEmptyButton (int indeX){//на входе индекс из buttonArray
+        //System.out.println("на входе " + buttonArray.get(indeX));
         //список возможных адресов вокруг целевого адреса
         int [] ints = new int[] {indeX - 26, indeX - 25, indeX - 24, indeX - 1, indeX +1, indeX + 24, indeX + 25, indeX + 26};
         for (int i = 0; i < ints.length; i++) {//перебор адресов
             ButtonClass currentBC = buttonArray.get(ints[i]);//достаем элемент из buttonArray по текущему адресу
             //если элемент не входит в списки компьютера или человека
-            if (!compPoints.contains(currentBC) && !userPoints.contains(currentBC)) {
+            if (!compPoints.contains(currentBC) && !userPoints.contains(currentBC) && !possiblePoints.contains(currentBC)) {
                 possiblePoints.add(currentBC);//добавляем элемент в список возможных
             }
+        }
+        //System.out.println("на выходе " + possiblePoints.get(possiblePoints.indexOf(buttonArray.get(indeX))));
+        //System.out.println("до " + possiblePoints.size());
+        possiblePoints.remove(possiblePoints.get(possiblePoints.indexOf(buttonArray.get(indeX))));
+        //System.out.println("после " + possiblePoints.size());
+        for (ButtonClass b: possiblePoints
+        ) {
+            b.getButton().setText("A");
         }
     }
 
