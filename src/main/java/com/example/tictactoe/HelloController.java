@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
@@ -53,9 +54,11 @@ public class HelloController {
             bc.setText("X");
             userPoints.add(bc);
             searchEmptyButton(buttonArray.indexOf(bc));
+            if (findWinner(userPoints, bc)) showAlertWithoutHeaderText("Вы выиграли!");
             whoseMove = "computer";
             compStep();
         }
+
         /*if (whoseMove.equals("human")){//если первый ходит человек
             bc.getButton().setStyle("-fx-text-fill: #0000ff");
             bc.setText("X");
@@ -68,6 +71,17 @@ public class HelloController {
             whoseMove = "human";}*/
     }
 
+    private void showAlertWithoutHeaderText(String stroka) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(stroka);
+
+        // Header Text: null
+        alert.setHeaderText(null);
+        alert.setContentText(stroka);
+
+        alert.showAndWait();
+    }
+
     //@FXML
     void compStep(){
         ButtonClass compSt = possiblePoints.get(random.nextInt(possiblePoints.size()));
@@ -75,6 +89,7 @@ public class HelloController {
         compSt.setText("O");
         compPoints.add(compSt);
         searchEmptyButton(buttonArray.indexOf(compSt));
+        if (findWinner(compPoints, compSt)) showAlertWithoutHeaderText("Вы проиграли!");
         whoseMove = "human";
     }
 
