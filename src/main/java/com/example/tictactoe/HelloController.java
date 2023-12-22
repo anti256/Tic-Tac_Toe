@@ -4,10 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -20,6 +17,7 @@ import javafx.scene.text.TextAlignment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.Random;
 
 public class HelloController {
@@ -38,9 +36,6 @@ public class HelloController {
     @FXML
     ArrayList<ButtonClass> possiblePoints = new ArrayList<>();//клетки, доступные для нажатия
 
-    //HashMap<Integer, Integer> compPoints = new HashMap<>();
-    //HashMap<Integer, Integer> userPoints = new HashMap<>();
-    //ArrayList<Points> userPoints = new ArrayList<>();
     @FXML
     String whoseMove;//чей ход - human или computer
 
@@ -54,23 +49,14 @@ public class HelloController {
             bc.setText("X");
             userPoints.add(bc);
             searchEmptyButton(buttonArray.indexOf(bc));
-            if (findWinner(userPoints, bc)) showAlertWithoutHeaderText("Вы выиграли!");
-            whoseMove = "computer";
-            compStep();
+            //whoseMove = "computer";
+            if (findWinner(userPoints, bc)) {showAlertWithoutHeaderText("Вы выиграли!");
+            } else {
+            compStep();}
         }
-
-        /*if (whoseMove.equals("human")){//если первый ходит человек
-            bc.getButton().setStyle("-fx-text-fill: #0000ff");
-            bc.setText("X");
-            userPoints.add(bc);
-            whoseMove = "computer";
-        } else {//если первый ходит компьютер
-            bc.getButton().setStyle("-fx-text-fill: #ff0000");
-            bc.setText("O");
-            compPoints.add(bc);
-            whoseMove = "human";}*/
     }
 
+    //показ окна выиграл/проиграл
     private void showAlertWithoutHeaderText(String stroka) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(stroka);
@@ -79,7 +65,14 @@ public class HelloController {
         alert.setHeaderText(null);
         alert.setContentText(stroka);
 
-        alert.showAndWait();
+        Optional<ButtonType> option = alert.showAndWait();
+        if (option.get() == ButtonType.OK) {
+            System.out.println("alert1 " + whoseMove);
+            newGame();
+            System.out.println("alert2 " + whoseMove);}
+
+        //alert.showAndWait();
+
     }
 
     //@FXML
@@ -89,10 +82,11 @@ public class HelloController {
         compSt.setText("O");
         compPoints.add(compSt);
         searchEmptyButton(buttonArray.indexOf(compSt));
-        if (findWinner(compPoints, compSt)) showAlertWithoutHeaderText("Вы проиграли!");
-        whoseMove = "human";
+        if (findWinner(compPoints, compSt)) {showAlertWithoutHeaderText("Вы проиграли!");}
+        //else {whoseMove = "human";}
     }
 
+    //определение есть ли победитель
     Boolean findWinner (ArrayList<ButtonClass> arr, ButtonClass btWin){
         int buttonArrayIndex = buttonArray.indexOf(btWin);//индекс аргумента в списке buttonArray
         //first direction - horizontal
@@ -101,6 +95,7 @@ public class HelloController {
         int[] bcArrayH = new int[] {buttonArrayIndex - 3, buttonArrayIndex - 2, buttonArrayIndex - 1, buttonArrayIndex,
                                     buttonArrayIndex + 1, buttonArrayIndex + 2, buttonArrayIndex + 3};
         for (int i = 0; i < 7; i++) {
+            if (bcArrayH[i] < 0 || bcArrayH[i] > 624) break;
             if (arr.contains(buttonArray.get(bcArrayH[i]))){countWinBtn++;} else countWinBtn = 0;
             if (countWinBtn == 4) return true;
         }
@@ -109,6 +104,7 @@ public class HelloController {
         int[] bcArrayV = new int[] {buttonArrayIndex - 75, buttonArrayIndex - 50, buttonArrayIndex - 25, buttonArrayIndex,
                 buttonArrayIndex + 25, buttonArrayIndex + 50, buttonArrayIndex + 75};
         for (int i = 0; i < 7; i++) {
+            if (bcArrayV[i] < 0 || bcArrayV[i] > 624) break;
             if (arr.contains(buttonArray.get(bcArrayV[i]))){countWinBtn++;} else countWinBtn = 0;
             if (countWinBtn == 4) return true;
         }
@@ -117,6 +113,7 @@ public class HelloController {
         int[] bcArrayLT = new int[] {buttonArrayIndex - 78, buttonArrayIndex - 52, buttonArrayIndex - 26, buttonArrayIndex,
                 buttonArrayIndex + 26, buttonArrayIndex + 52, buttonArrayIndex + 78};
         for (int i = 0; i < 7; i++) {
+            if (bcArrayLT[i] < 0 || bcArrayLT[i] > 624) break;
             if (arr.contains(buttonArray.get(bcArrayLT[i]))){countWinBtn++;} else countWinBtn = 0;
             if (countWinBtn == 4) return true;
         }
@@ -125,6 +122,7 @@ public class HelloController {
         int[] bcArrayLB = new int[] {buttonArrayIndex + 72, buttonArrayIndex + 48, buttonArrayIndex + 24, buttonArrayIndex,
                 buttonArrayIndex - 24, buttonArrayIndex - 48, buttonArrayIndex - 72};
         for (int i = 0; i < 7; i++) {
+            if (bcArrayLB[i] < 0 || bcArrayLB[i] > 624) break;
             if (arr.contains(buttonArray.get(bcArrayLB[i]))){countWinBtn++;} else countWinBtn = 0;
             if (countWinBtn == 4) return true;
         }
@@ -144,13 +142,14 @@ public class HelloController {
                 buttonArray.add(btnCl);
             }
         }
-        newGame(null);
+        newGame();
     }//end of initialize()
 
     @FXML
-    void newGame(ActionEvent event) {
+    void newGame() {
         whoseMove = (whoseMove.equals("human")) ? "computer": "human";//перещелкиваем игрока
         label.setText((whoseMove.equals("human")) ? "Человек первый" : "Компьютер первый");
+        System.out.println(whoseMove);
         //очищаем игровое поле
         for (ButtonClass btnC: buttonArray
              ) {
@@ -162,15 +161,6 @@ public class HelloController {
         possiblePoints.clear();
         possiblePoints.add(buttonArray.get(338));
         searchEmptyButton(338);
-        /*possiblePoints.add(buttonArray.get(312));
-        possiblePoints.add(buttonArray.get(313));
-        possiblePoints.add(buttonArray.get(314));
-        possiblePoints.add(buttonArray.get(337));
-        possiblePoints.add(buttonArray.get(339));
-        possiblePoints.add(buttonArray.get(362));
-        possiblePoints.add(buttonArray.get(363));
-        possiblePoints.add(buttonArray.get(364));*/
-
 
        if (whoseMove.equals("human")){//если первый ходит человек
            buttonArray.get(338).getButton().setStyle("-fx-text-fill: #0000ff");
@@ -183,25 +173,11 @@ public class HelloController {
            compPoints.add(posBC);//добавляем случайный в список компьютера
            //в список возможных добавляем элементы вокруг случайного без текста
            searchEmptyButton(buttonArray.indexOf(posBC));
-           //possiblePoints.remove(posBC);
-           //possiblePoints.remove(cCurr);//удаляем случайного из списка возможных
         } else {//если первый ходит компьютер
            buttonArray.get(338).getButton().setStyle("-fx-text-fill: #ff0000");
            buttonArray.get(338).setText("O");
            compPoints.add(buttonArray.get(338));
         }
-
-       /* buttonArray.stream()
-            .filter(ButtonC -> ButtonC.getButton().equals(ButtonC.getButton(13, 13)))
-            .forEach(x -> x.setText("X"));
-
-        buttonArray.get(338).setText("O");*/
-
-
-    //compPoints.add(new Points(13, 13));
-    /*whoseMove = "human";
-    buttonArray.get(0).getButton().setVisible(true);
-    buttonArray.get(0).setText("sdf");*/
     }
 
     //поиск элемента в buttonArray по кнопке
@@ -219,6 +195,7 @@ public class HelloController {
         //список возможных адресов вокруг целевого адреса
         int [] ints = new int[] {indeX - 26, indeX - 25, indeX - 24, indeX - 1, indeX +1, indeX + 24, indeX + 25, indeX + 26};
         for (int i = 0; i < ints.length; i++) {//перебор адресов
+            if (ints[i] < 0 || ints[i] > 624) break;
             ButtonClass currentBC = buttonArray.get(ints[i]);//достаем элемент из buttonArray по текущему адресу
             //если элемент не входит в списки компьютера или человека
             if (!compPoints.contains(currentBC) && !userPoints.contains(currentBC) && !possiblePoints.contains(currentBC)) {
