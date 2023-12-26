@@ -41,15 +41,15 @@ public class ButtonClass {
         button.setText(str);
     }
 
-    public String getText (Button btn){
-        return btn.getText();
+    public String getText (){
+        return this.getText();
     }
 
-    public int getX (Button btn){
+    public int getX (){
         return x;
     }
 
-    public int getY (Button btn){
+    public int getY (){
         return y;
     }
 
